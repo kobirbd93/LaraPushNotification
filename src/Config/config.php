@@ -1,6 +1,6 @@
 <?php
 /**
- * @see https://github.com/kobirbd18/LaraPushNotification
+ * @see https://github.com/kobirbd93/LaraPushNotification
  */
 
 return [

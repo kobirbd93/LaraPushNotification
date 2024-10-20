@@ -23,8 +23,8 @@
     ],
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/kobirbd18/LaraPushNotification/issues",
-        "source": "https://github.com/kobirbd18/LaraPushNotification"
+        "issues": "https://github.com/kobirbd93/LaraPushNotification/issues",
+        "source": "https://github.com/kobirbd93/LaraPushNotification"
     },
     "autoload": {
         "psr-4": {
@@ -34,7 +34,7 @@
     "authors": [
         {
             "name": "Kobir Hossain",
-            "email": "kobirhosain4352@gmail.com"
+            "email": "kobirhossain4352@gmail.com"
         }
     ],
     "extra": {
