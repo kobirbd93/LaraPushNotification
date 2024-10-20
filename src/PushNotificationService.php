@@ -26,6 +26,13 @@ abstract class PushNotificationService
     protected $topicRemoveUrl = '';
 
     /**
+     * Server Url for get specific device_token attached into how many topic
+     *
+     * @var string
+     */
+    protected $topicInfoUrl = '';
+
+    /**
      * Generated oauth token for server request
      *
      * @var string
@@ -76,6 +83,14 @@ abstract class PushNotificationService
     public function setTopicRemoveUrl($topicRemoveUrl)
     {
         $this->topicRemoveUrl = $topicRemoveUrl;
+    }
+
+    /**
+     * @param string $topicInfoUrl
+     */
+    public function setTopicInfoUrl($topicInfoUrl)
+    {
+        $this->topicInfoUrl = $topicInfoUrl;
     }
 
     /**

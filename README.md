@@ -34,7 +34,7 @@ The default configuration parameters for **FCM** are :
 - `'certificate' => __DIR__ . '/fcmCertificates/fcm-admin-sdk.json',`
 - `'dry_run' => false,`
 - `'firebase_project_id' => 'FIREBASE_PROJECT_ID',`
-- `'token_cache_time' => 3500, //in seconds`
+- `'token_cache_time' => 3500, //in seconds & must be <= 3500`
 - `'guzzle' => [],`
 
 You can dynamically update those values or adding new ones calling the method setConfig like so:
@@ -191,7 +191,7 @@ object sendByTopic($topic, $isCondition)
 **Syntax**
 
 ```php
-object addDeviceTokenToTopic(string $topic, array $deviceTokens)
+object addDeviceTokenToTopic(string $topic)
 ```
 
 #### removeDeviceTokenFromTopic
@@ -201,7 +201,17 @@ object addDeviceTokenToTopic(string $topic, array $deviceTokens)
 **Syntax**
 
 ```php
-object removeDeviceTokenFromTopic(string $topic, array $deviceTokens)
+object removeDeviceTokenFromTopic(string $topic)
+```
+
+#### getTopicInfo
+
+`getTopicInfo` method use to get all topics name associate with the provided device token.
+
+**Syntax**
+
+```php
+object getTopicInfo(string $deviceToken)
 ```
 
 #### setTopicAddUrl
@@ -228,4 +238,175 @@ object setTopicRemoveUrl($url)
 
 > Not update the url unless it's really necessary.
 
+#### setTopicInfoUrl
+
+`setTopicInfoUrl` method sets the topic info url, which you pass the url through parameter as a string.
+
+**Syntax**
+
+```php
+object setTopicInfoUrl($url)
+```
+
+> Not update the url unless it's really necessary.
+
 ### Usage samples
+
+```php
+$push = new PushNotification();
+/***
+ * (string) title
+ * (string) body
+ * (string) image, optional field image size must be less than 1mb
+*/
+$push->setNotification([
+        'title' => (string) 'Title goes here',
+        'body' => (string) 'Body text goes here',
+        'image' => (string) 'image-url', //optional,
+        ])
+        ->setDevicesToken(['deviceToken1', 'deviceToken2', ...])
+        ->send();
+```
+
+This is the basic data-set for notification. Here **send()** method used for sending push notification.
+
+### Additional Payload
+
+You can also pass the additional payload data by using **setData()** method
+
+```php
+/***
+ * (string) id, if haven't id place '0'
+*/
+$feedback = $push->setNotification([
+                    'title' => (string) 'Title goes here',
+                    'body' => (string) 'Body text goes here',
+                    'image' => (string) 'image-url', //optional
+                    ])
+                    ->setData([
+                    'id' => (string) 'dynamic_id',
+                    'type' => 'OFFER',
+                    'sound' => 'default',
+                    'click_action' => 'NOTIFICATION_CLICK',
+                    ])
+                    ->setDevicesToken(['deviceToken1', 'deviceToken2', ...])
+                    ->send()
+                    ->getFeedback();
+```
+
+### Get Notification Feedback
+
+```php
+
+$feedback = $push->setNotification([
+                'title' => (string) 'Title goes here',
+                'body' => (string) 'Body text goes here',
+                'image' => (string) 'image-url', //optional
+                ])
+                ->setDevicesToken(['deviceToken1', 'deviceToken2', ...])
+                ->send()
+                ->getFeedback();
+```
+
+If you want get the failed device tokens use **getFailedDeviceTokens()** method as ...
+
+```php
+$failedTokens = $push->setNotification([
+                    'title' => (string) 'Title goes here',
+                    'body' => (string) 'Body text goes here',
+                    'image' => (string) 'image-url', //optional
+                    ])
+                    ->setDevicesToken(['deviceToken1', 'deviceToken2', ...])
+                    ->send()
+                    ->getFailedDeviceTokens();
+```
+
+If you want send the notification to only 1 device, you may pass the value as string.
+
+```php
+$feedback = $push->setNotification([
+                'title' => (string) 'Title goes here',
+                'body' => (string) 'Body text goes here',
+                'image' => (string) 'image-url', //optional
+                ])
+                ->setDevicesToken('deviceToken')
+                ->send()
+                ->getFeedback();
+
+```
+
+### Send Notification by Topic
+
+```php
+/***
+ * (string) topic, name like 'foo', 'bar'
+*/
+$feedback = $push->setNotification([
+                'title' => (string) 'Title goes here',
+                'body' => (string) 'Body text goes here',
+                'image' => (string) 'image-url', //optional
+                ])
+                ->sendByTopic('bar')
+                ->getFeedback();
+
+```
+
+or with using a condition:
+
+```php
+/***
+ * you must have pass the additional parameter as 'true'
+*/
+$feedback = $push->setNotification([
+                'title' => (string) 'Title goes here',
+                'body' => (string) 'Body text goes here',
+                'image' => (string) 'image-url', //optional
+                ])
+                ->sendByTopic("'foo' in topics || 'bar' in topics", true)
+                ->getFeedback();
+```
+
+### Add Device Tokens into Topic
+
+```php
+
+$response = $push->setDevicesToken(['deviceToken1', 'deviceToken2', ...])
+                ->addDeviceTokenToTopic('foo');
+```
+
+### Remove Device Tokens from Topic
+
+```php
+
+$response = $push->setDevicesToken(['deviceToken1', 'deviceToken2', ...])
+                ->removeDeviceTokenFromTopic('bar');
+```
+
+### Get Topic Information
+If you want to get how many topic associated with a device token then call this **getTopicInfo()** method with device_token parameter.
+```php
+
+$response = $push->getTopicInfo('deviceToken1');
+
+//successful response will be like
+{
+    "applicationVersion": "19",
+    "application": "com.iid.example",
+    "authorizedEntity": "123456782354",
+    "platform": "ANDROID",
+    "rel": {
+        "topics": {
+            "cats": {
+                "addDate": "2024-10-20"
+            },
+            "dogs": {
+                "addDate": "2024-10-20"
+            }
+        }
+    }
+}
+```
+
+### Contribution
+
+#### Submitting issues and pull requests for bugs or new feature(s) requests are always welcome.

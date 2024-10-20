@@ -152,6 +152,30 @@ class PushNotification
     }
 
     /**
+     * Set the Push service project id
+     *
+     * @param string $projectId
+     * @return $this
+     */
+    public function setProjectId($projectId)
+    {
+        $this->service->setProjectId($projectId);
+
+        return $this;
+    }
+
+    /**
+     * Set the jsonFile path for the notification
+     * @param string $filePath
+     */
+    public function setJsonCredential($filePath)
+    {
+        $this->service->setJsonCredential($filePath);
+
+        return $this;
+    }
+
+    /**
      * Set the topic add url
      *
      * @param string $topicAddUrl
@@ -173,6 +197,19 @@ class PushNotification
     public function setTopicRemoveUrl($topicRemoveUrl)
     {
         $this->service->setTopicRemoveUrl($topicRemoveUrl);
+
+        return $this;
+    }
+
+    /**
+     * Set the topic info url
+     *
+     * @param string $topicInfoUrl
+     * @return $this
+     */
+    public function setTopicInfoUrl($topicInfoUrl)
+    {
+        $this->service->setTopicInfoUrl($topicInfoUrl);
 
         return $this;
     }
@@ -221,6 +258,36 @@ class PushNotification
     public function getFailedDeviceTokens()
     {
         return $this->service->failedDevicesTokens;
+    }
+
+    /**
+     * Add Device Token into Topic
+     * @param string $topic
+     * @return mixed
+     */
+    public function addDeviceTokenToTopic($topic)
+    {
+        return $this->service->addDeviceTokenToTopic($topic, $this->deviceTokens);
+    }
+
+    /**
+     * Remove Device Token from Topic
+     * @param string $topic
+     * @return mixed
+     */
+    public function removeDeviceTokenFromTopic($topic)
+    {
+        return $this->service->removeDeviceTokenFromTopic($topic, $this->deviceTokens);
+    }
+
+    /**
+     *Get Topic Info
+     * @param string $deviceToken
+     * @return mixed
+     */
+    public function getTopicInfo($deviceToken)
+    {
+        return $this->service->getTopicInfo($deviceToken);
     }
 
     /**

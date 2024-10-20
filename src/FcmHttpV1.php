@@ -39,8 +39,9 @@ class FcmHttpV1 extends PushNotificationService implements PushNotificationInter
         $this->url = "https://fcm.googleapis.com/v1/projects/" . $this->config['firebase_project_id'] . "/messages:send";
         $this->topicAddUrl = "https://iid.googleapis.com/iid/v1:batchAdd";
         $this->topicRemoveUrl = "https://iid.googleapis.com/iid/v1:batchRemove";
+        $this->topicInfoUrl = "https://iid.googleapis.com/iid/info";
         $this->client = new Client($this->config['guzzle'] ?? []);
-        $this->token_cache_time = $this->config['token_cache_time'] ?? 3500;
+        $this->token_cache_time = $this->config['token_cache_time'] && $this->config['token_cache_time'] < 3500 ? $this->config['token_cache_time'] : 3500;
     }
 
     /**
@@ -336,7 +337,7 @@ class FcmHttpV1 extends PushNotificationService implements PushNotificationInter
         }
 
         $body = [
-            'to' => (string) 'topics/' . $topic,
+            'to' => (string) "/topics/$topic",
             'registration_tokens' => (array) $deviceTokens,
         ];
 
@@ -346,8 +347,8 @@ class FcmHttpV1 extends PushNotificationService implements PushNotificationInter
                 'headers' => [
                     'Authorization' => 'Bearer ' . $apiToken,
                     'Content-Type' => 'application/json',
+                    'access_token_auth' => 'true',
                     'Accept' => 'application/json',
-                    'access_token_auth' => true,
                 ],
                 'body' => json_encode($body),
             ]);
@@ -379,7 +380,7 @@ class FcmHttpV1 extends PushNotificationService implements PushNotificationInter
         }
 
         $body = [
-            'to' => (string) 'topics/' . $topic,
+            'to' => (string) "/topics/$topic",
             'registration_tokens' => (array) $deviceTokens,
         ];
 
@@ -389,10 +390,48 @@ class FcmHttpV1 extends PushNotificationService implements PushNotificationInter
                 'headers' => [
                     'Authorization' => 'Bearer ' . $apiToken,
                     'Content-Type' => 'application/json',
+                    'access_token_auth' => 'true',
                     'Accept' => 'application/json',
-                    'access_token_auth' => true,
                 ],
                 'body' => json_encode($body),
+            ]);
+
+            $mgs = json_decode((string) $response->getBody(), true, 512, JSON_BIGINT_AS_STRING);
+
+            $response = ['success' => true, 'message' => $mgs, 'code' => $response->getStatusCode()];
+            return $response;
+        } catch (\Exception $e) {
+            $response = ['success' => false, 'message' => $e->getMessage(), 'code' => $e->getCode()];
+            return $response;
+        }
+    }
+
+    /**
+     * Get Topic Info
+     * @param string $deviceToken
+     * @return mixed
+     */
+    public function getTopicInfo($deviceToken)
+    {
+        if (!$this->checkCertificate()) {
+            return $this->feedback;
+        }
+
+        if (!$deviceToken) {
+            return $this->deviceTokensNotFound();
+        }
+
+        $apiToken = $this->getOauthToken();
+        try {
+            $response = $this->client->get($this->topicInfoUrl . "/$deviceToken", [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $apiToken,
+                    'Content-Type' => 'application/json',
+                    'access_token_auth' => 'true',
+                ],
+                'query' => [
+                    'details' => 'true',
+                ],
             ]);
 
             $mgs = json_decode((string) $response->getBody(), true, 512, JSON_BIGINT_AS_STRING);
