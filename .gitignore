@@ -1,0 +1,14 @@
+# IDE
+.idea
+# OS
+.DS_Store
+Thumbs.db
+# Composer
+/vendor
+composer.lock
+# local files
+src/Config/fcmCertificates/*.json
+# phpunit
+phpunit.phar
+phpunit.xml
+.phpunit.result.cache
