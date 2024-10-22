@@ -15,6 +15,11 @@ Use composer to download and install the package and its dependencies.
 ```sh
 composer require kobir/larapush-notification
 ```
+if you are facing dependency version conflict related issues please run
+
+```sh
+composer require kobir/larapush-notification -W
+```
 
 The package will automatically register its service provider.
 
