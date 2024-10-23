@@ -1,55 +1,58 @@
 {
-    "name": "kobir/larapush-notification",
-    "description": "Laravel package to send push notification to mobile devices (android, ios)  using fcm http v1",
-    "require": {
-        "php": "^7.2.5|^7.4|^8.0",
-        "google/apiclient": "^2.14.0|2.15.0",
-        "guzzlehttp/guzzle": "^6.3|^7.0|^7.2",
-        "illuminate/support": "^7.0|^8.0|^9.0|^10.0|^11.0",
-        "illuminate/notifications": "^7.0|^8.0|^9.0|^10.0|^11.0"
+  "name": "kobir/larapush-notification",
+  "description": "Laravel package to send push notification to mobile devices (android, ios)  using fcm http v1",
+  "require": {
+    "php": "^7.2|^7.3|^7.4|^8.0|^8.1|^8.2",
+    "google/apiclient": "^2.14.0|2.15.0",
+    "guzzlehttp/guzzle": "^6.3|^7.0|^7.2",
+    "illuminate/support": "^7.0|^8.0|^9.0|^10.0|^11.0",
+    "illuminate/notifications": "^7.0|^8.0|^9.0|^10.0|^11.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.5|^8.0|^9.0|^9.3|^9.5|^10.5"
+  },
+  "keywords": [
+    "Laravel",
+    "push",
+    "notification",
+    "gcm",
+    "apn",
+    "fcm",
+    "android",
+    "ios"
+  ],
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/kobirbd93/LaraPushNotification/issues",
+    "source": "https://github.com/kobirbd93/LaraPushNotification"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kobir\\PushNotification\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Kobir Hossain",
+      "email": "kobirhossain4352@gmail.com"
+    }
+  ],
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.x-dev"
     },
-    "require-dev": {
-        "phpunit/phpunit": "^7.5|^8.0|^9.0|^9.5|^10.5"
-    },
-    "keywords": [
-        "Laravel",
-        "push",
-        "notification",
-        "gcm",
-        "apn",
-        "fcm",
-        "android",
-        "ios"
-    ],
-    "license": "MIT",
-    "support": {
-        "issues": "https://github.com/kobirbd93/LaraPushNotification/issues",
-        "source": "https://github.com/kobirbd93/LaraPushNotification"
-    },
-    "autoload": {
-        "psr-4": {
-            "Kobir\\PushNotification\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Kobir Hossain",
-            "email": "kobirhossain4352@gmail.com"
-        }
-    ],
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Kobir\\PushNotification\\Providers\\PushNotificationServiceProvider"
-            ],
-            "aliases": {
-                "PushNotification": "Kobir\\PushNotification\\Facades\\PushNotification"
-            }
-        }
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "laravel": {
+      "providers": [
+        "Kobir\\PushNotification\\Providers\\PushNotificationServiceProvider"
+      ],
+      "aliases": {
+        "PushNotification": "Kobir\\PushNotification\\Facades\\PushNotification"
+      }
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
