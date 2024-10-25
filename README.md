@@ -4,9 +4,9 @@ Simple Laravel package for sending push notification to mobile devices (android,
 
 ### Requirements
 
-- php version ^7.2.5 or higher
+- php version ^7.2 or higher
 - Google API Client Library ^2.14.0 or higher
-- Laravel version ^7.0 or higher
+- Laravel version ^6.0 or higher
 
 ## Installation
 
